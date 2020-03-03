@@ -1,0 +1,10 @@
+﻿I'm sorry, but errors were detected in your script. Please correct the
+errors listed below, and try again.
+
+
+File "game/roomscreens.rpy", line 4: hotspot statement expects 1 positional arguments, got 0.
+    hotspot
+           ^
+
+Ren'Py Version: Ren'Py 7.3.5.606
+Tue Jan 28 12:13:50 2020
