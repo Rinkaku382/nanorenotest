@@ -2,9 +2,13 @@
 errors listed below, and try again.
 
 
-File "game/roomscreens.rpy", line 4: hotspot statement expects 1 positional arguments, got 0.
-    hotspot
-           ^
+File "game/script.rpy", line 139: expected statement.
+    computergood
+                ^
 
-Ren'Py Version: Ren'Py 7.3.5.606
-Tue Jan 28 12:13:50 2020
+File "game/script.rpy", line 144: expected statement.
+    computersad
+               ^
+
+Ren'Py Version: Ren'Py 7.2.2.491
+Fri Mar 06 00:54:08 2020
