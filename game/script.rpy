@@ -20,7 +20,7 @@ label start:
 
     But don't worry, I'm here with you. To help you, or even guide you, we could say.
     """
-    scene room
+    scene roomd
     with fadehold
     $ mood = 50
     $ menthealth = 0
@@ -30,34 +30,48 @@ label start:
 
     The morning's soft colours linger through the whole apartment.
     """
-    jump roomscreen
+    jump roomdownscreen
 
-label roomscreen:
-    scene room
-    call screen roomscreens
-label roomscreen2:
-    scene room
-    call screen roomscreens2
+label roomdown:
+    scene roomu
+    $ renpy.pause(0.5)
+    scene roomd
+    with fade
+    $ renpy.pause(1)
+    jump roomdownscreen
+label roomdownscreen:
+    scene roomd
+    call screen roomdownscreen
 
+label roomup:
+    scene roomd
+    $ renpy.pause(0.5)
+    scene roomu
+    with fade
+    $ renpy.pause(1)
+    jump roomupscreen
+label roomupscreen:
+    scene roomu
+    call screen roomupscreen
 label window:
     """
     The weather outside is nice.
 
     It's still early morning, so there are not many people around.
     """
-    jump roomscreen
+    jump roomdownscreen
 label bed:
     """
     You are not tired, now.
     """
-    jump roomscreen
+    jump roomupscreen
 label tv:
     """
     There's a nice film.
 
     Maybe it's a bit sad, but you've never seen it.
     """
-    jump roomscreen
+    jump roomdownscreen
 
 label computer:
     scene computerneut
@@ -190,7 +204,7 @@ label computer:
                     s "Thanks. Go now!"
                 "Hmm, we'll see.":
                     s "Ok, it's fine..."
-    jump roomscreen
+    jump roomdownscreen
 label computer2:
     if sofiatalk == True and mood >= 55:
         scene computergood
@@ -198,9 +212,12 @@ label computer2:
     if sofiatalk == True and mood <= 45:
         scene computerbad
         s "You look so sad..."
-    jump roomscreen2
+    jump roomdownscreen
 
 label door:
+    if mood >= 46 and mood <= 54:
+        "I can't get outside, it's tightly closed."
+        jump roomdownscreen
     if mood <= 45:
         scene trauma
         with slowfade
@@ -251,6 +268,3 @@ label door:
         $ renpy.end_replay()
 
         return
-    else:
-        "I can't get outside, it's tightly closed."
-        jump roomscreen

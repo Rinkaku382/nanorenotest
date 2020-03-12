@@ -2,13 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 139: expected statement.
-    computergood
-                ^
-
-File "game/script.rpy", line 144: expected statement.
-    computersad
-               ^
+File "game/roomscreens.rpy", line 11: u'Jump' is not a keyword argument or valid child for the hotspot statement.
+    hotspot action Jump ("bed")
+                       ^
 
 Ren'Py Version: Ren'Py 7.2.2.491
-Fri Mar 06 00:54:08 2020
+Wed Mar 11 16:54:17 2020
