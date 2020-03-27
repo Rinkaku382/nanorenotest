@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/roomscreens.rpy", line 11: u'Jump' is not a keyword argument or valid child for the hotspot statement.
-    hotspot action Jump ("bed")
-                       ^
+The label computer2 is defined twice, at
+  File "game/script.rpy", line 443 and
+  File "game/script.rpy", line 458.
 
 Ren'Py Version: Ren'Py 7.2.2.491
-Wed Mar 11 16:54:17 2020
+Tue Mar 24 17:18:49 2020
