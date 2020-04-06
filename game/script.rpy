@@ -6,11 +6,14 @@ define fadehold = Fade(3.0, 1.0, 3.0)
 define y = Character("You")
 define n = Character("Narrator")
 define s = Character("Sofia")
+define ug = Character("Unknown Girl")
 define m = Character("Strange Man")
 
 
 label start:
+    stop music fadeout (2)
     scene black
+    with slowerfade
     """
     Home.
 
@@ -30,10 +33,13 @@ label start:
 
     Hidden in the shadows, perhaps.
     """
+    play music "roombgm.ogg" fadein (3)
     scene roomd_dawn
     with fadehold
     $ mood = 50
     $ menth = 5
+    $ mem = 0
+    $ trauma = 0
     $ sofiatalk = False
     """
     You open your eyes.
@@ -70,14 +76,14 @@ label roomdown:
     $ renpy.pause(1)
     jump roomdownscreen
 label sofiagoodfade:
-    scene computergood
+    scene computergood_dawn
     $ renpy.pause(0.5)
     scene roomd_dawn
     with fade
     $ renpy.pause(1)
     jump roomdownscreen
 label sofiasadfade:
-    scene computerbad
+    scene computerbad_dawn
     $ renpy.pause(0.5)
     scene roomd_dawn
     with fade
@@ -145,6 +151,34 @@ label trash:
     Just a normal trash bin, nothing special about it.
     """
     jump roomdownscreen
+label phone:
+    """
+    An old and dusty phone.
+
+    Not so useful, as you never call anyone.
+    """
+    jump roomdownscreen
+label cds:
+    """
+    An ominous pile of CDs.
+
+    They really are a lot.
+    """
+    jump roomdownscreen
+label toy:
+    """
+    You remember someone gave this to you.
+
+    You can't exactly remember when, but it was a lot of years ago.
+    """
+    jump roomupscreen
+label mirror:
+    """
+    You see yourself.
+
+    Is it a pleasant view?
+    """
+    jump roomupscreen
 label guit:
     """
     An old classic guitar.
@@ -161,17 +195,17 @@ label computer:
     if sofiatalk == True and mood <= 45:
         jump sofiasad
 label sofiagood:
-    scene computergood
+    scene gmood_sgood_dawn
     with slowfade
     s "I see you're doing fine, today!"
     jump sofiagoodfade
 label sofiasad:
-    scene computerbad
+    scene smood_sbad_dawn
     with slowfade
     s "You look so sad..."
     jump sofiasadfade
 label sofianeut:
-    scene computerneut
+    scene neutmood_sbad_dawn
     with slowfade
     $ sofiatalk = True
     """
@@ -179,22 +213,20 @@ label sofianeut:
 
     On the screen there's a young girl.
     """
-    s "You're awake!"
+    ug "You're awake!"
     menu:
         "Sorry, but...who are you?":
             $ mood += 5
-            scene computergood
             with dissolve
-            s """
+            ug """
             Guess your memory still isn't alright, huh...?
 
             Well, anyway, my name is Sofia. I'm your...best friend.
             """
         "I don't feel like talking to a stranger.":
             $ mood -= 5
-            scene computerbad
             with dissolve
-            s "A stranger? Well, I'm not a stranger, I'm Sofia...your best friend!"
+            ug "A stranger? Well, I'm not a stranger, I'm Sofia...your best friend!"
     s "I'm here to help you."
     y "Help?"
     s "Yes, of course. We know each other very well, but you've lost your memory, so..."
@@ -223,7 +255,14 @@ label sofianeut:
     In all sincerity, I don't really know how to open it...
 
     But it seems to be related to that icon on this screen.
-
+    """
+    if mood <= 45:
+        scene smood_sneut_dawn
+        with dissolve
+    if mood >= 55:
+        scene gmood_sgood_dawn
+        with dissolve
+    """
     It changes in relation to your mood.
 
     And when it does, I guess you should try to check on the door.
@@ -232,19 +271,30 @@ label sofianeut:
     """
     menu:
         "Something strange?":
-            $ mood += 10
+            $ mood += 15
             if mood == 55:
-                scene computergood
+                scene gmood_sneut_dawn
+                with dissolve
+            if mood >= 60:
+                scene gmood_sgood_dawn
+                with dissolve
             if mood == 50:
-                scene computerneut
+                scene neutmood_sneut_dawn
+                with dissolve
+            if mood <= 45:
+                scene smood_sneut_dawn
                 with dissolve
             s "Don't worry, there's nothing dangerous out there! Not that I know, at least..."
         "...What should happen?":
-            $ mood -= 10
+            $ mood -= 15
+            if mood >= 55:
+                scene gmood_sbad_dawn
+                with dissolve
             if mood <= 45:
-                scene computerbad
+                scene smood_sbad_dawn
+                with dissolve
             if mood == 50:
-                scene computerneut
+                scene neutmood_sbad_dawn
                 with dissolve
             s "Please, don't worry so much!"
     s """
@@ -290,38 +340,68 @@ label sofianeut:
     """
     menu:
         "I will.":
-            $ mood += 15
+            if mood == 50:
+                $ mood += 10
+            else:
+                $ mood += 5
             if mood == 55:
-                scene computergood
+                scene gmood_sneut_dawn
                 with dissolve
-            if mood == 60:
-                scene computergood
-            if mood == 45:
-                scene computerbad
-            s "Thanks. Go now!"
-        "Hmm, we'll see.":
-            $ mood -= 15
+                s "Thanks. Go now!"
+                scene roomd_dawn
+                with slowfade
+                jump roomdownscreen
+            if mood >= 60:
+                scene gmood_sgood_dawn
+                s "Thanks. Go now!"
+                scene roomd_dawn
+                with slowfade
+                jump roomdownscreen
+            if mood <= 45:
+                scene smood_sneut_dawn
+                s "Thanks. Go now!"
+                scene roomd_dawn
+                with slowfade
+                jump roomdownscreen
+        "Hmm, we'll see...":
+            if mood == 50:
+                $ mood -= 10
+            else:
+                $ mood -= 5
             if mood == 55:
-                scene computergood
+                scene gmood_sneut_dawn
+                s "Ok, it's fine..."
+                scene roomd_dawn
+                with slowfade
+                jump roomdownscreen
             if mood == 45:
-                scene computerbad
+                scene smood_sbad_dawn
                 with dissolve
+                s "Ok, it's fine..."
+                scene roomd_dawn
+                with slowfade
+                jump roomdownscreen
             if mood == 40:
-                scene computerbad
-            s "Ok, it's fine..."
-    if mood >= 55:
-        jump sofiagoodfade
-    if mood <= 45:
-        jump sofiasadfade
+                scene smood_sbad_dawn
+                s "Ok, it's fine..."
+                scene roomd_dawn
+                with slowfade
+                jump roomdownscreen
 
 label door:
     if mood >= 46 and mood <= 54:
         "I can't get outside, it's tightly closed."
         jump roomdownscreen
     if mood <= 45:
+        stop music fadeout (2)
+        scene black
+        with slowfade
+        $ renpy.pause(1.5)
         scene trauma
         with slowfade
+        play music "traumabgm.ogg" fadein (2)
         $ menth -= 1
+        $ trauma += 1
         """
         You find yourself in a dark place, ruled by sad and heavy feelings.
 
@@ -339,11 +419,18 @@ label door:
 
         And so the memory ends, without a word spoken.
         """
+        stop music fadeout (3)
         jump narrator2
     elif mood >= 55:
+        stop music fadeout (2)
+        scene black
+        with slowfade
+        $ renpy.pause(1.5)
         scene mem
         with slowfade
+        play music "membgm.ogg" fadein (2)
         $ menth += 1
+        $ mem += 1
         """
         There is a small and feeble garden ahead of you.
 
@@ -361,9 +448,8 @@ label door:
 
         He doesn't talk and not even move, yet there is a deep feeling of calmness that comes with the memory's end.
         """
+        stop music fadeout (3)
         jump narrator2
-        show black
-        with fadehold
 
 ####################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################START PASSAGE 2 #####################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
 
@@ -389,7 +475,8 @@ label narrator2:
 
     That's good. Because doubt is the only certainty someone could obtain in this world.
     """
-    scene roomd_dawn
+    play music "roombgm.ogg" fadein (3)
+    scene roomd_aft
     with fadehold
     $ mood = 50
     $ sofiatalk = False
@@ -401,7 +488,7 @@ label narrator2:
         """
         Waking up, you feel a bittersweet sensation in your heart.
 
-        It lingers through your whole body, flowing towards your mind.
+        It flows through your whole body towards your mind.
 
         It's a melancholic feeling, as if you've just seen an old friend whom you forgot.
 
@@ -424,51 +511,47 @@ label narrator2:
     jump roomdownscreen2
 
 label sofiagoodfade2:
-    scene computergood
+    scene computergood_aft
     $ renpy.pause(0.5)
-    scene roomd_dawn
+    scene roomd_aft
     with fade
     $ renpy.pause(1)
     jump roomdownscreen2
 label sofiasadfade2:
-    scene computerbad
+    scene computerbad_aft
     $ renpy.pause(0.5)
-    scene roomd_dawn
+    scene roomd_aft
     with fade
     $ renpy.pause(1)
     jump roomdownscreen2
 label sofianeutfade2:
-    scene computerneut
+    scene computerneut_aft
     $ renpy.pause(0.5)
-    scene roomd_dawn
+    scene roomd_aft
     with fade
     $ renpy.pause(1)
     jump roomdownscreen2
 
 label roomdown2:
-    scene roomu_dawn
+    scene roomu_aft
     $ renpy.pause(0.5)
-    scene roomd_dawn
+    scene roomd_aft
     with fade
     $ renpy.pause(1)
     jump roomdownscreen2
 label roomdownscreen2:
-    scene roomd_dawn
-    if mood >= 55 or mood <= 45:
-        play sound "door.ogg"
-        $ renpy.pause(0.1)
-        "The door has opened..."
+    scene roomd_aft
     call screen roomdownscreen2
 
 label roomup2:
-    scene roomd_dawn
+    scene roomd_aft
     $ renpy.pause(0.5)
-    scene roomu_dawn
+    scene roomu_aft
     with fade
     $ renpy.pause(1)
-    jump roomupscreen
+    jump roomupscreen2
 label roomupscreen2:
-    scene roomu_dawn
+    scene roomu_aft
     call screen roomupscreen2
 label window2:
     if sofiatalk == False:
@@ -479,9 +562,7 @@ label window2:
         """
         Everything outside really looks grim.
         """
-    if sofiatalk == True:
-        $ mood += 5
-        $ windowseen = True
+    if sofiatalk == True and windowseen == False:
         """
         Looks like a gloomy day outside.
 
@@ -489,7 +570,10 @@ label window2:
         """
         menu:
             "Why not?":
-                $ mood -= 5
+                if mood == 55:
+                    $ mood -= 10
+                else:
+                    $ mood -= 5
                 $ windowseen = True
                 """
                 Everything seems strangely empty.
@@ -499,7 +583,7 @@ label window2:
             "Not now.":
                 "You step away from the window."
     jump roomdownscreen2
-label bedpass2:
+label bed2:
     """
     You can't sleep now.
 
@@ -521,13 +605,14 @@ label books2:
 
         Maybe later...
         """
-    if sofiatalk == True:
-        $ mood += 5
-        $ books = True
+    if sofiatalk == True and books == False:
         "You look at the titles, unable to choose which book read."
         menu:
             "Choose one randomly.":
-                $ mood += 5
+                if mood == 45:
+                    $ mood += 10
+                else:
+                    $ mood += 5
                 $ books = True
                 """
                 You pick and old essay about cinema.
@@ -554,12 +639,15 @@ label plant2:
         """
         The plant is overflowing with joy.
         """
-    if sofiatalk == True:
+    if sofiatalk == True and plant == False:
         "This plant sure needs some water."
         menu:
             "Water it.":
-                $ mood += 5
-                $ books = True
+                if mood == 45:
+                    $ mood += 10
+                else:
+                    $ mood += 5
+                $ plant = True
                 "As you pour the water in the vase, the plant regains some light."
             "Maybe later...":
                 """
@@ -579,16 +667,58 @@ label trash2:
 
         It makes the house look cleaner.
         """
-    if sofiatalk == True:
+    if sofiatalk == True and trash == False:
         "Maybe it's better to throw it away..."
         menu:
             "Empty the bin.":
-                $ mood += 5
+                if mood == 45:
+                    $ mood += 10
+                else:
+                    $ mood += 5
                 $ trash = True
                 "Now you feel better with yourself."
             "Leave it as it is.":
                 "You don't really want to do that now."
     jump roomdownscreen2
+label phone2:
+    """
+    The dust never disappear from this phone, huh?
+    """
+    jump roomdownscreen2
+label tv2:
+    """
+    There's a french movie on the tv.
+
+    A young boy is running through an empty street at night.
+
+    A song by David Bowie is playing in the background.
+
+    Its seems very interesting.
+    """
+    jump roomdownscreen2
+label cds2:
+    """
+    Whenever you watch at this pile of CDs...
+
+    You think it's a shame you don't have a CD-player.
+    """
+    jump roomdownscreen2
+label toy2:
+    """
+    You're unable to toss it away.
+
+    Even after all this time, you can't undestrand why.
+
+    Maybe you're sill connected with the person who gave it to you.
+    """
+    jump roomupscreen2
+label mirror2:
+    """
+    Still no one but yourself.
+
+    Is it a pleasant view?
+    """
+    jump roomupscreen2
 label guit2:
     """
     This guitar...
@@ -597,7 +727,7 @@ label guit2:
 
     But how much time has passed since then?
     """
-    jump roomdownscreen2
+    jump roomupscreen2
 
 label computer2:
     if sofiatalk == False:
@@ -607,12 +737,12 @@ label computer2:
     if sofiatalk == True and mood <= 45:
         jump sofiasad2
 label sofiagood2:
-    scene computergood
+    scene gmood_sgood_aft
     with slowfade
     s "It's nice seeing you smiling like this, you know?"
     jump sofiagoodfade2
 label sofiasad2:
-    scene computerbad
+    scene smood_sbad_aft
     with slowfade
     s """
     Is it me or you seem a little down?
@@ -621,7 +751,7 @@ label sofiasad2:
     """
     jump sofiasadfade2
 label sofianeut2:
-    scene computerneut
+    scene neutmood_sgood_aft
     with slowfade
     $ sofiatalk = True
     s """
@@ -632,7 +762,7 @@ label sofianeut2:
     menu:
         "I...got out of the door.":
             $ mood += 5
-            scene computergood
+            scene gmood_sneut_aft
             with dissolve
             s """
             Really?
@@ -645,7 +775,7 @@ label sofianeut2:
             """
         "Nowhere, just resting.":
             $ mood -= 5
-            scene computerbad
+            scene smood_sbad_aft
             with dissolve
             s """
             Hmm, if you say so...
@@ -659,12 +789,12 @@ label sofianeut2:
             "I saw a strange man in a garden.":
                 $ mood += 5
                 if mood >= 55:
-                    scene computergood
+                    scene gmood_sneut_aft
                 if mood == 50:
-                    scene computerneut
+                    scene neutmood_sneut_aft
                     with dissolve
                 if mood == 45:
-                    scene computerbad
+                    scene smood_sneut_aft
                 s """
                 That sounds very interesting!
 
@@ -678,11 +808,11 @@ label sofianeut2:
                     "It was...sad.":
                         $ mood -= 5
                         if mood == 55:
-                            scene computergood
+                            scene gmood_sbad_aft
                         if mood == 50:
-                            scene computerneut
+                            scene neutmood_sbad_aft
                         if mood <= 45:
-                            scene computerbad
+                            scene smood_sbad_aft
                             with dissolve
                         s """
                         Oh, I see...
@@ -696,15 +826,17 @@ label sofianeut2:
                     "Peaceful, I guess.":
                         $ mood += 5
                         if mood == 55:
-                            scene computergood
+                            scene gmood_sgood_aft
                             with dissolve
                         if mood >= 60:
-                            scene computergood
+                            scene gmood_sgood_aft
+                            with dissolve
                         if mood == 50:
-                            scene computerneut
+                            scene neutmood_sgood_aft
                             with dissolve
                         if mood <= 45:
-                            scene computerbad
+                            scene smood_sgood_aft
+                            with dissolve
                         s """
                         I'm glad to hear that!
 
@@ -719,15 +851,17 @@ label sofianeut2:
             "I prefer not to talk about it.":
                 $ mood -= 5
                 if mood >= 55:
-                    scene computergood
+                    scene gmood_sbad_aft
+                    with dissolve
                 if mood == 50:
-                    scene computerneut
+                    scene neutmood_sbad_aft
                     with dissolve
                 if mood == 45:
-                    scene computerbad
+                    scene smood_sbad_aft
                     with dissolve
                 if mood <= 40:
-                    scene computerbad
+                    scene smood_sbad_aft
+                    with dissolve
                 s """
                 Oh, I understand...guess it was too sad, right...?
 
@@ -738,12 +872,14 @@ label sofianeut2:
             "There was a scary man...":
                 $ mood -=5
                 if mood >= 55:
-                    scene computergood
+                    scene gmood_sbad_aft
+                    with dissolve
                 if mood == 50:
-                    scene computerneut
+                    scene neutmood_sbad_aft
                     with dissolve
                 if mood <= 45:
-                    scene computerbad
+                    scene smood_sbad_aft
+                    with dissolve
                 s """
                 A scary man...?
 
@@ -755,13 +891,14 @@ label sofianeut2:
                     "I just want to forget him, now...":
                         $ mood += 5
                         if mood == 55:
-                            scene computergood
+                            scene gmood_sgood_aft
                             with dissolve
                         if mood == 50:
-                            scene computerneut
+                            scene neutmood_sgood_aft
                             with dissolve
                         if mood <= 45:
-                            scene computerbad
+                            scene smood_sgood_aft
+                            with dissolve
                         s """
                         I bet you do!
 
@@ -774,13 +911,13 @@ label sofianeut2:
                     "I think I'm still scared.":
                         $ mood -= 5
                         if mood == 55:
-                            scene computergood
+                            scene gmood_sbad_aft
                             with dissolve
                         if mood == 50:
-                            scene computerneut
+                            scene neutmood_sbad_aft
                             with dissolve
                         if mood <= 45:
-                            scene computerbad
+                            scene smood_sbad_aft
                         s """
                         I can only imagine how terrible it could have been...
 
@@ -794,15 +931,15 @@ label sofianeut2:
             "I don't want to think about it.":
                 $ mood += 5
                 if mood == 55:
-                    scene computergood
+                    scene gmood_sneut_aft
                     with dissolve
                 if mood >= 60:
-                    scene computergood
+                    scene gmood_sneut_aft
                 if mood == 50:
-                    scene computerneut
+                    scene neutmood_sneut_aft
                     with dissolve
                 if mood == 45:
-                    scene computerbad
+                    scene smood_sneut_aft
                 s """
                 I understand, I don't want to force you.
 
@@ -817,7 +954,7 @@ label sofianeut2:
 
     But, anyway, the thing is that they might be useful to keep you busy.
 
-    You know, they say that distractions sometimes make us heppier, somehow.
+    You know, they say that distractions sometimes make us happier, somehow.
 
     I think it's because by distracting ourselves we focus less on what's painful.
 
@@ -829,85 +966,69 @@ label sofianeut2:
     """
     menu:
         "Ok, thanks for your help.":
-            $ mood += 5
-            if mood == 55:
-                scene computergood
-                with dissolve
-                s """
-                Very well!
-
-                I hope it's all clear...
-
-                See you later, then!
-                """
-                jump sofiagoodfade2
-            if mood >= 60:
-                scene computergood
-                s """
-                Very well!
-
-                I hope it's all clear...
-
-                See you later, then!
-                """
-                jump sofiagoodfade2
-            if mood == 50:
-                scene computerneut
-                with dissolve
-                s """
-                Very well!
-
-                I hope it's all clear...
-
-                See you later, then!
-                """
-                jump sofianeutfade2
-            if mood <= 45:
-                scene computerbad
-                s """
-                Very well!
-
-                I hope it's all clear...
-
-                See you later, then!
-                """
-                jump sofiasadfade2
-        "Uhmm yeah, right...":
-            $ mood -= 5
-            if mood == 55:
-                scene computergood
-                with dissolve
-                s """
-                Well, I hope it's all clear.
-
-                See you later!
-
-                And remember, whatever happens...I'm here.
-                """
-                jump sofiagoodfade2
-            if mood >= 60:
-                scene computergood
-                s """
-                Well, I hope it's all clear.
-
-                See you later!
-
-                And remember, whatever happens...I'm here.
-                """
-                jump sofiagoodfade2
-            if mood == 50:
-                scene computerneut
-                with dissolve
-                s """
-                Well, I hope it's all clear.
-
-                See you later!
-
-                And remember, whatever happens...I'm here.
-                """
-                jump sofiagoodfade2
             if mood == 45:
-                scene computerbad
+                $ mood += 10
+            else:
+                $ mood += 5
+            if mood == 55:
+                scene gmood_sneut_aft
+                with dissolve
+                s """
+                Very well!
+
+                I hope it's all clear...
+
+                See you later, then!
+                """
+                scene roomd_aft
+                with slowfade
+                jump roomdownscreen2
+            if mood >= 60:
+                scene gmood_sgood_aft
+                with dissolve
+                s """
+                Very well!
+
+                I hope it's all clear...
+
+                See you later, then!
+                """
+                scene roomd_aft
+                with slowfade
+                jump roomdownscreen2
+            if mood == 50:
+                scene neutmood_sneut_aft
+                with dissolve
+                s """
+                Very well!
+
+                I hope it's all clear...
+
+                See you later, then!
+                """
+                scene roomd_aft
+                with slowfade
+                jump roomdownscreen2
+            if mood <= 45:
+                scene smood_sneut_aft
+                with dissolve
+                s """
+                Very well!
+
+                I hope it's all clear...
+
+                See you later, then!
+                """
+                scene roomd_aft
+                with slowfade
+                jump roomdownscreen2
+        "Uhmm yeah, right...":
+            if mood == 55:
+                $ mood -= 10
+            else:
+                $ mood -= 5
+            if mood == 55:
+                scene gmood_sneut_aft
                 with dissolve
                 s """
                 Well, I hope it's all clear.
@@ -916,9 +1037,12 @@ label sofianeut2:
 
                 And remember, whatever happens...I'm here.
                 """
-                jump sofiabadfade2
-            if mood <= 40:
-                scene computerbad
+                scene roomd_aft
+                with slowfade
+                jump roomdownscreen2
+            if mood >= 60:
+                scene gmood_sgood_aft
+                with dissolve
                 s """
                 Well, I hope it's all clear.
 
@@ -926,20 +1050,63 @@ label sofianeut2:
 
                 And remember, whatever happens...I'm here.
                 """
-                jump sofiabadfade2
+                scene roomd_aft
+                with slowfade
+                jump roomdownscreen2
+            if mood == 50:
+                scene neutmood_sneut_aft
+                with dissolve
+                s """
+                Well, I hope it's all clear.
+
+                See you later!
+
+                And remember, whatever happens...I'm here.
+                """
+                scene roomd_aft
+                with slowfade
+                jump roomdownscreen2
+            if mood == 45:
+                scene smood_sbad_aft
+                with dissolve
+                s """
+                Well, I hope it's all clear.
+
+                And remember, whatever happens...I'm here.
+                """
+                scene roomd_aft
+                with slowfade
+                jump roomdownscreen2
+            if mood <= 40:
+                scene smood_sbad_aft
+                with dissolve
+                s """
+                Well, I hope it's all clear.
+
+                And remember, whatever happens...I'm here.
+                """
+                scene roomd_aft
+                with slowfade
+                jump roomdownscreen2
 
 label door2:
     if mood >= 46 and mood <= 54:
         "I can't get outside, it's tightly closed."
         jump roomdownscreen2
     if mood <= 45:
+        stop music fadeout (2)
+        scene black
+        with slowfade
+        $ renpy.pause(1.5)
         scene trauma
         with slowfade
+        play music "traumabgm.ogg" fadein (3)
         $ menth -= 1
+        $ trauma += 1
         """
-        The red place again.
+        The dark place again.
 
-        It seems identic yet similar than last time.
+        It seems different yet similar than last time.
 
         The strange, scary man is still there.
 
@@ -975,13 +1142,18 @@ label door2:
 
         And the memory starts to disappear.
         """
-        show black
-        with fadehold
-        return
+        stop music fadeout (3)
+        jump narrator3
     elif mood >= 55:
+        stop music fadeout (2)
+        scene black
+        with slowfade
+        $ renpy.pause(1.5)
         scene mem
         with slowfade
+        play music "membgm.ogg" fadein (3)
         $ menth += 1
+        $ mem += 1
         m """
         When we first met
 
@@ -1009,6 +1181,33 @@ label door2:
 
         So sad...
         """
+        menu:
+            "This place...":
+                m """
+                It rings some bell?
+
+                It does, right?
+
+                But I guess you still aren't ready.
+
+                Memories can't come back in a second, you know?
+
+                Take it easy, rest some more...
+
+                We'll see each other again soon.
+                """
+            "Who are you...?":
+                m """
+                A friend.
+
+                An old friend that you seem to can't let go...
+
+                And it's so sad, all this.
+
+                Losing every memories of me...
+
+                And yet, not being able to completely forget.
+                """
         """
         You feel a tear falling slowly.
 
@@ -1018,9 +1217,8 @@ label door2:
 
         But it's still faded, as the scene that slowly disappears.
         """
-        show black
-        with fadehold
-        return
+        stop music fadeout (3)
+        jump narrator3
 
 ####################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################START PASSAGE 3 #####################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################
 
@@ -1028,9 +1226,146 @@ label narrator3:
     show black
     with fadehold
     """
-    AAA
+    You're now ready to go back to your room, aren't you?
+
+    Well, I'm afraid things are not so simple.
+
+    You see, each one of us tries to hide something away.
+
+    Some kind of pain we want to lose.
+
+    Painful feelings, memories or even both of them.
+
+    After all, pain, feelings and memories are strictly connected.
+
+    And it's clear to me that you can't obtain your memories back because something blocks them.
+
+    A rather...painful event? Or a dark memory...a sad one.
+
+    But...
+
+    It seems you're not listening to what I'm saying.
+
+    Not carefully, at least.
+
+    Maybe it's something about me...
+
+    I don't know, maybe my voice or something like that.
+
+    Or maybe...
+
+    Are you getting bored, perhaps?
     """
-    scene roomd
+    menu:
+        "Yes.":
+            """
+            Hmmm...
+
+            I guess that's understandable.
+
+            Maybe you need some 'excitement', huh?
+
+            Let's try something a little different, then.
+            """
+        "What...?":
+            """
+            Oh, come on.
+
+            I'm just playing with you a little.
+
+            Can't I?
+
+            After all, that's why you are here, right?
+
+            So, now, let's play something a little different.
+            """
+        "No":
+            """
+            I guess that's fine, then.
+
+            No boredom is good.
+
+            But I'm all up for excitement, today.
+
+            So let's make a little experiment.
+            """
+    """
+    Let's make a little experiment, shall we?
+
+    Not that you have any kind of choice, of course.
+
+    You do it or you just go away, that's all.
+
+    But anyway...
+
+    There is a woman, in your life.
+
+    You've known her for so much time...
+
+    Yet you remember nothing about her, now.
+
+    She said she'll help you, no matter what.
+
+    And she said that with a strong and sincere smile on your face.
+
+    But what about you?
+
+    What do you think?
+
+    Do you trust her?
+    """
+    menu:
+        "I do.":
+            """
+            To trust her...
+
+            Or not.
+
+            A nice question, huh?
+
+            One that a narrator should never do.
+
+            As it's true that narrator should never interfere with the story or the characters.
+
+            But something about you moved me.
+
+            Your dreams...your memories...seem to be so sad.
+
+            And sad memories are the sweetest ones.
+
+            The dearest ones.
+
+            And it seems you're a rather simple and sincere person.
+
+            That's really something. At least for now.
+            """
+        "I don't.":
+            """
+            Seems like you listened to me, after all...
+
+            Doubt is the only thing you'll achieve, here.
+
+            That really is true.
+
+            But...only if you care to interpret what happens.
+
+            Interpretation is semplicity's killer.
+
+            The more you'll try to understand, the more you'll doubt and the less simple everything will appear to you.
+
+            If you want to truly try to interpret or not...
+
+            Well, that's up to you.
+
+            I'm just here to look at the path you choose.
+            """
+    """
+    Well, now I think it's time for you to go back.
+
+    Please, enjoy yourself some more in your room.
+    """
+    play music "roombgm.ogg" fadein (3)
+    scene roomd_night
     with fadehold
     $ mood = 50
     $ menthealth = 0
@@ -1040,43 +1375,98 @@ label narrator3:
     $ trash = False
     $ plant = False
     if menth >= 6:
+        scene roomd_night
+        with fadehold
         """
-        AAA
+        As you wake up you feel calm.
+
+        It's night.
+
+        You don't know the hour, but it seems to be very late.
+
+        The light coming through the windows is weak and paints everything in deep blue shadows.
+
+        How beautiful, you think, to see such beauty in front of you.
+
+        You're not afraid, even though what you just experienced.
+
+        You're starting to get used to this feeling.
+
+        This strange sensation of sadness and longing which you still can't completely understand.
         """
     if menth <= 4:
+        scene black
+        with fadehold
         """
-        AAA
+        A headache.
+
+        Strong.
+
+        As you wake up, it's the first thing you realize.
+
+        Even before noticing it's night.
+        """
+        scene roomd_night
+        with fadehold
+        """
+        You can't really understand why, but the silence and dark colours in the room scare you.
+
+        You feel completely alone.
+
+        Even more than you did before.
+
+        And as you notice there is only one source of light in the entire apartment...
+
+        You turn to it.
+
+        Desperately.
+        """
+    if menth == 5:
+        """
+        You wake up in the middle of the night.
+
+        Alone, as always.
+
+        Finding yourself surrounded by silence.
+
+        There's almost no light and the few there is colours the apartment in deep shades of blue.
+
+        Long shadows casted from every object.
+
+        And a total sense of solitude that resonates with your heart...
         """
     jump roomdownscreen3
 
 label roomdown3:
-    scene roomu
+    scene roomu_night
     $ renpy.pause(0.5)
-    scene roomd
+    scene roomd_night
     with fade
     $ renpy.pause(1)
     jump roomdownscreen3
 label roomdownscreen3:
-    scene roomd
+    scene roomd_night
     call screen roomdownscreen3
 
 label roomup3:
-    scene roomd
+    scene roomd_night
     $ renpy.pause(0.5)
-    scene roomu
+    scene roomu_night
     with fade
     $ renpy.pause(1)
-    jump roomupscreen
+    jump roomupscreen3
 label roomupscreen3:
-    scene roomu
+    scene roomu_night
     call screen roomupscreen3
 
 label window3:
-    if sofiatalk == False or if windowseen == True:
+    if sofiatalk == False:
         """
-        The weather outside is nice.
+        From the window you can see the stars.
 
-        It's still early morning, so there are not many people around.
+        They shine through the dark and calm sky.
+
+        It's a kind of melancholic sight.
         """
     if sofiatalk == True:
         $ mood += 5
@@ -1084,48 +1474,111 @@ label window3:
     jump roomdownscreen3
 label bed3:
     """
-    You are not tired, now.
+    You just woke up, so you're not tired.
     """
     jump roomupscreen3
 label books3:
-    if sofiatalk == False or if books == True:
+    if sofiatalk == False:
         """
-        A library filled with books.
+        In the night's pale light, the library seems different.
 
-        They seem to be all classics.
+        It's a strange sensation, but it's as if everything in it has become more sad than before.
+
+        All the books' titles...
+
+        You still can't recognize many of them but the words have become...
+
+        Different.
+
+        As if melancholy has caught them.
         """
     if sofiatalk == True:
         $ mood += 5
         $ books = True
     jump roomdownscreen3
 label plant3:
-    if sofiatalk == False or if plant == True:
+    if sofiatalk == False:
         """
-        The first Spring's sprouts are starting to appear on this plant.
+        You still wonder which flowers will grow.
 
-        You wonder which flowers will grow.
+        And as you look at the plant, you feel some kind of distant calling.
+
+        A soft voice that whispers your name, smiling.
+
+        Strangely, you turn towards the computer.
         """
     if sofiatalk == True:
         $ mood += 5
         $ plant = True
     jump roomdownscreen3
 label trash3:
-    if sofiatalk == False or if trash == True:
+    if sofiatalk == False:
         """
-        Just a normal trash bin, nothing special about it.
+        Just a normal trash bin.
+
+        Even though everything looks sadder...
+
+        There's still nothing special about it.
         """
     if sofiatalk == True:
         $ mood += 5
         $ trash = True
     jump roomdownscreen3
+label phone3:
+    """
+    Maybe you could call someone...
+
+    But there really isn't anyone to call.
+    """
+    jump roomdownscreen3
+label tv3:
+    """
+    There's a strange danish tv series...
+
+    It's entirely set in a hospital.
+
+    An old man is now on the hospital's roof.
+
+    He screams about how much he hates Denmark.
+    """
+    jump roomdownscreen3
+label cds3:
+    """
+    You look closely at it.
+
+    There are a lot of albums of a band named...'Tool'.
+
+    Interesting.
+    """
+    jump roomdownscreen3
+label toy3:
+    """
+    You're starting to accept it.
+
+    After all, it's a nice teddy bear.
+    """
+    jump roomupscreen3
+label mirror3:
+    """
+    You keep looking at it.
+
+    Yet there's only you.
+
+    Is the view so pleasant?
+    """
+    jump roomupscreen3
 label guit3:
     """
     An old classic guitar.
 
-    You faintly remember some chords, but now it's not the time.
-    """
-    jump roomdownscreen3
+    If you close your eyes and listen to the silence...
 
+    You can faintly hear some chords playing in the wind.
+    """
+    jump roomupscreen3
+label door3:
+    "I can't get outside, it's tightly closed."
+    jump roomdownscreen2
 label computer3:
     if sofiatalk == False:
         jump sofianeut3
@@ -1144,31 +1597,20 @@ label sofiasad3:
     s "You look so sad..."
     jump sofiasadfade3
 label sofianeut3:
-    scene computerneut
+    scene computerneut_night
     with slowfade
     $ sofiatalk = True
+    """
+    You calmly sit at your desk.
 
-    if mood >= 55:
-        jump sofiagoodfade3
-    if mood <= 45:
-        jump sofiasadfade3
+    The computer is already turned on, as always.
 
+    Sofia is still there.
 
-label door3:
-    if mood >= 46 and mood <= 54:
-        "I can't get outside, it's tightly closed."
-        jump roomdownscreen2
-    if mood <= 45:
-        scene trauma
-        with slowfade
-        $ trauma += 1
-        """
-        trauma
-        """
-    elif mood >= 55:
-        scene mem
-        with slowfade
-        $ mem += 1
-        """
-        memory
-        """
+    She hasn't abandoned you and waits smiling, gently.
+    """
+    s "Welcome back again."
+    show black
+    with fadehold
+    stop music fadeout (3)
+    return

@@ -1,7 +1,6 @@
 ﻿################################################################################
 ## Initialization
 ################################################################################
-
 init offset = -1
 
 
@@ -351,6 +350,33 @@ style navigation_button_text:
 ## Used to display the main menu when Ren'Py starts.
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#main-menu
+screen press_to_start():
+    tag menu
+    imagemap:
+        idle "start_idle.png"
+        hover "start_hover.png"
+        ground "start_idle.png"
+
+        hotspot (253, 506, 288, 299) action Show("main_menu", transition=dissolve)
+
+label before_main_menu:
+    scene start_idle
+    with Fade (2.0, 0, 2.0)
+    play music "menubgm.ogg" fadein (1.5)
+    call screen press_to_start
+
+screen main_menu_navigation():
+
+    imagemap:
+        idle "menu_idle.png"
+        hover "menu_hover.png"
+        ground "menu_idle.png"
+
+        hotspot(69, 98, 297, 282) action Start()
+        hotspot(320, 366, 384, 193) action ShowMenu("load")
+        hotspot(109, 599, 506, 193) action ShowMenu("preferences")
+        hotspot(1614, 813, 271, 243) action OpenURL("https://twitter.com/TSoletude")
+        hotspot(322, 827, 383, 203)  action Quit(confirm=not main_menu)
 
 screen main_menu():
 
@@ -367,7 +393,7 @@ screen main_menu():
 
     ## The use statement includes another screen inside this one. The actual
     ## contents of the main menu are in the navigation screen.
-    use navigation
+    use main_menu_navigation
 
     if gui.show_name:
 
