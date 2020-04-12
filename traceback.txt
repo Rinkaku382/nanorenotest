@@ -1,76 +1,50 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
-While loading <'Image' u'start_idle.webm'>:
-  File "renpy/common/00start.rpy", line 300, in script call
-    call expression "before_main_menu"
-  File "game/screens.rpy", line 368, in script
-    call screen press_to_start
-  File "renpy/common/000statements.rpy", line 531, in execute_call_screen
-    store._return = renpy.call_screen(name, *args, **kwargs)
-Exception: Could not load image u'start_idle.webm': error('Unsupported image format',)
+While running game code:
+  File "game/script.rpy", line 1375, in script
+    menu:
+  File "game/script.rpy", line 1375, in script
+    menu:
+error: Out of memory
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "renpy/common/00start.rpy", line 300, in script call
-    call expression "before_main_menu"
-  File "game/screens.rpy", line 368, in script
-    call screen press_to_start
-  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\ast.py", line 1911, in execute
-    self.call("execute")
-  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\ast.py", line 1899, in call
-    return renpy.statements.call(method, parsed, *args, **kwargs)
-  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\statements.py", line 220, in call
-    return method(parsed, *args, **kwargs)
-  File "renpy/common/000statements.rpy", line 531, in execute_call_screen
-    store._return = renpy.call_screen(name, *args, **kwargs)
-  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\exports.py", line 2875, in call_screen
-    rv = renpy.ui.interact(mouse="screen", type="screen", roll_forward=roll_forward)
+  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\bootstrap.py", line 313, in bootstrap
+    renpy.main.main()
+  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\main.py", line 525, in main
+    run(restart)
+  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\main.py", line 139, in run
+    renpy.execution.run_context(True)
+  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\execution.py", line 892, in run_context
+    context.run()
+  File "game/script.rpy", line 1375, in script
+    menu:
+  File "game/script.rpy", line 1375, in script
+    menu:
+  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\ast.py", line 1609, in execute
+    choice = renpy.exports.menu(choices, self.set, args, kwargs, item_arguments)
+  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\exports.py", line 977, in menu
+    rv = renpy.store.menu(new_items)
+  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\exports.py", line 1203, in display_menu
+    rv = renpy.ui.interact(mouse='menu', type=type, roll_forward=roll_forward)
   File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\ui.py", line 289, in interact
     rv = renpy.game.interface.interact(roll_forward=roll_forward, **kwargs)
   File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\core.py", line 2690, in interact
     repeat, rv = self.interact_core(preloads=preloads, trans_pause=trans_pause, **kwargs)
-  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\core.py", line 3174, in interact_core
-    self.draw_screen(root_widget, fullscreen_video, (not fullscreen_video) or video_frame_drawn)
-  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\core.py", line 2086, in draw_screen
-    renpy.config.screen_height,
-  File "render.pyx", line 516, in renpy.display.render.render_screen
-  File "render.pyx", line 244, in renpy.display.render.render
-  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\layout.py", line 722, in render
-    surf = render(child, width, height, cst, cat)
-  File "render.pyx", line 151, in renpy.display.render.render
-  File "render.pyx", line 244, in renpy.display.render.render
-  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\layout.py", line 722, in render
-    surf = render(child, width, height, cst, cat)
-  File "render.pyx", line 151, in renpy.display.render.render
-  File "render.pyx", line 244, in renpy.display.render.render
-  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\layout.py", line 722, in render
-    surf = render(child, width, height, cst, cat)
-  File "render.pyx", line 151, in renpy.display.render.render
-  File "render.pyx", line 244, in renpy.display.render.render
-  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\screen.py", line 669, in render
-    child = renpy.display.render.render(self.child, w, h, st, at)
-  File "render.pyx", line 151, in renpy.display.render.render
-  File "render.pyx", line 244, in renpy.display.render.render
-  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\layout.py", line 722, in render
-    surf = render(child, width, height, cst, cat)
-  File "render.pyx", line 151, in renpy.display.render.render
-  File "render.pyx", line 244, in renpy.display.render.render
-  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\layout.py", line 722, in render
-    surf = render(child, width, height, cst, cat)
-  File "render.pyx", line 151, in renpy.display.render.render
-  File "render.pyx", line 244, in renpy.display.render.render
-  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\im.py", line 580, in render
-    return cache.get(self, render=True)
-  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\im.py", line 266, in get
-    surf = image.load()
-  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\im.py", line 625, in load
-    surf = renpy.display.pgrender.load_image(renpy.loader.load(self.filename), self.filename)
-  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\pgrender.py", line 162, in load_image
-    raise Exception("Could not load image {!r}: {!r}".format(filename, e))
-Exception: Could not load image u'start_idle.webm': error('Unsupported image format',)
+  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\core.py", line 3308, in interact_core
+    ev = self.event_wait()
+  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\core.py", line 2338, in event_wait
+    self.check_background_screenshot()
+  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\core.py", line 2153, in check_background_screenshot
+    self.bgscreenshot_surface = renpy.display.draw.screenshot(self.surftree, self.fullscreen_video)
+  File "gldraw.pyx", line 1367, in renpy.gl.gldraw.GLDraw.screenshot
+  File "C:\Users\thoma\Desktop\Programmazione giochi\renpy-7.2.2-sdk\renpy\display\pgrender.py", line 118, in surface
+    surf = Surface((width + 4, height + 4), 0, sample)
+  File "src/pygame_sdl2/surface.pyx", line 164, in pygame_sdl2.surface.Surface.__init__
+error: Out of memory
 
 Windows-8-6.2.9200
 Ren'Py 7.2.2.491
 Reverie Demo 
-Sun Apr 05 17:59:44 2020
+Mon Apr 06 18:09:14 2020

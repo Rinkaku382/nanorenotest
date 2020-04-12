@@ -271,7 +271,7 @@ label sofianeut:
     """
     menu:
         "Something strange?":
-            $ mood += 15
+            $ mood += 5
             if mood == 55:
                 scene gmood_sneut_dawn
                 with dissolve
@@ -286,7 +286,7 @@ label sofianeut:
                 with dissolve
             s "Don't worry, there's nothing dangerous out there! Not that I know, at least..."
         "...What should happen?":
-            $ mood -= 15
+            $ mood -= 5
             if mood >= 55:
                 scene gmood_sbad_dawn
                 with dissolve
@@ -317,7 +317,7 @@ label sofianeut:
 
             You're here, now, so that's the important thing, isn't it?
             """
-        "So, how did we know each other?":
+        "For how long did we know each other?":
             s """
             It's been something like...five years.
 
@@ -340,10 +340,7 @@ label sofianeut:
     """
     menu:
         "I will.":
-            if mood == 50:
-                $ mood += 10
-            else:
-                $ mood += 5
+            $ mood += 5
             if mood == 55:
                 scene gmood_sneut_dawn
                 with dissolve
@@ -364,10 +361,7 @@ label sofianeut:
                 with slowfade
                 jump roomdownscreen
         "Hmm, we'll see...":
-            if mood == 50:
-                $ mood -= 10
-            else:
-                $ mood -= 5
+            $ mood -= 5
             if mood == 55:
                 scene gmood_sneut_dawn
                 s "Ok, it's fine..."
@@ -381,7 +375,7 @@ label sofianeut:
                 scene roomd_dawn
                 with slowfade
                 jump roomdownscreen
-            if mood == 40:
+            if mood <= 40:
                 scene smood_sbad_dawn
                 s "Ok, it's fine..."
                 scene roomd_dawn
@@ -415,7 +409,7 @@ label door:
 
         You feel alone, somehow, and that black shadow seem to be connected to that feeling.
 
-        He doesn't talk nor move. He just watches you silently as a strange sense of guilt caughts you.
+        He doesn't talk nor move. He just watches you silently as a strange sense of guilt catches you.
 
         And so the memory ends, without a word spoken.
         """
@@ -438,7 +432,7 @@ label door:
 
         The wind blows softly, caressing your skin. It's a cold breeze, yet tender.
 
-        In the middle of the garden there is a man, sitted on an old chair.
+        In the middle of the garden there is a man, sat on an old chair.
 
         He gives you his back, so you can't see his face, yet it reminds you of something.
 
@@ -705,9 +699,9 @@ label cds2:
     jump roomdownscreen2
 label toy2:
     """
-    You're unable to toss it away.
+    You're unable to toss this teddy it away.
 
-    Even after all this time, you can't undestrand why.
+    Even after all this time, you can't understand why.
 
     Maybe you're sill connected with the person who gave it to you.
     """
@@ -1093,7 +1087,36 @@ label door2:
     if mood >= 46 and mood <= 54:
         "I can't get outside, it's tightly closed."
         jump roomdownscreen2
-    if mood <= 45:
+    if mood <= 45 and trauma == 0:
+        stop music fadeout (2)
+        scene black
+        with slowfade
+        $ renpy.pause(1.5)
+        scene trauma
+        with slowfade
+        play music "traumabgm.ogg" fadein (2)
+        $ menth -= 1
+        $ trauma += 1
+        """
+        You find yourself in a dark place, ruled by sad and heavy feelings.
+
+        A garden, it seems.
+
+        Yet the entire place seems to be falling apart.
+
+        In front of you there is a man. He's looking at you, his eyes glittering in the darkness.
+
+        Suddenly, you feel a stabbing pain hitting you.
+
+        You feel alone, somehow, and that black shadow seem to be connected to that feeling.
+
+        He doesn't talk nor move. He just watches you silently as a strange sense of guilt caughts you.
+
+        And so the memory ends, without a word spoken.
+        """
+        stop music fadeout (3)
+        jump narrator3
+    if mood <= 45 and trauma == 1:
         stop music fadeout (2)
         scene black
         with slowfade
@@ -1144,7 +1167,36 @@ label door2:
         """
         stop music fadeout (3)
         jump narrator3
-    elif mood >= 55:
+    if mood >= 55 and mem == 0:
+        stop music fadeout (2)
+        scene black
+        with slowfade
+        $ renpy.pause(1.5)
+        scene mem
+        with slowfade
+        play music "membgm.ogg" fadein (2)
+        $ menth += 1
+        $ mem += 1
+        """
+        There is a small and feeble garden ahead of you.
+
+        A big tree casts his leaves towards the sky and all the colours are pale, as if you're in a dream.
+
+        The wind blows softly, caressing your skin. It's a cold breeze, yet tender.
+
+        In the middle of the garden there is a man, sitted on an old chair.
+
+        He gives you his back, so you can't see his face, yet it reminds you of something.
+
+        A memory that you thought was gone is silently appearing in front of you as a pale shadow,
+
+        You don't know how, but you understand he's smiling even though you can't see it.
+
+        He doesn't talk and not even move, yet there is a deep feeling of calmness that comes with the memory's end.
+        """
+        stop music fadeout (3)
+        jump narrator3
+    elif mood >= 55 and mem == 1:
         stop music fadeout (2)
         scene black
         with slowfade
@@ -1200,11 +1252,11 @@ label door2:
                 m """
                 A friend.
 
-                An old friend that you seem to can't let go...
+                An old friend that you can't seem to let go...
 
                 And it's so sad, all this.
 
-                Losing every memories of me...
+                Losing every memory of me...
 
                 And yet, not being able to completely forget.
                 """
@@ -1264,8 +1316,6 @@ label narrator3:
             I guess that's understandable.
 
             Maybe you need some 'excitement', huh?
-
-            Let's try something a little different, then.
             """
         "What...?":
             """
@@ -1276,8 +1326,6 @@ label narrator3:
             Can't I?
 
             After all, that's why you are here, right?
-
-            So, now, let's play something a little different.
             """
         "No":
             """
@@ -1286,8 +1334,6 @@ label narrator3:
             No boredom is good.
 
             But I'm all up for excitement, today.
-
-            So let's make a little experiment.
             """
     """
     Let's make a little experiment, shall we?
@@ -1306,7 +1352,7 @@ label narrator3:
 
     She said she'll help you, no matter what.
 
-    And she said that with a strong and sincere smile on your face.
+    And she said that with a strong and sincere smile on her face.
 
     But what about you?
 
@@ -1578,7 +1624,7 @@ label guit3:
     jump roomupscreen3
 label door3:
     "I can't get outside, it's tightly closed."
-    jump roomdownscreen2
+    jump roomdownscreen3
 label computer3:
     if sofiatalk == False:
         jump sofianeut3
@@ -1610,7 +1656,11 @@ label sofianeut3:
     She hasn't abandoned you and waits smiling, gently.
     """
     s "Welcome back again."
-    show black
-    with fadehold
     stop music fadeout (3)
+    jump thanks
+
+label thanks:
+    scene thanks_idle
+    with slowfade
+    call screen thanks
     return

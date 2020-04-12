@@ -65,3 +65,11 @@ screen roomupscreen3:
         hotspot(1263, 300, 65, 80) action Jump ("toy3")
         hotspot(1517, 467, 190, 219) action Jump("guit3")
         hotspot(715, 548, 168, 262) action Jump ("roomdown3")
+
+screen thanks:
+    imagemap:
+        idle "thanks_idle.png"
+        hover"thanks_hover.png"
+        ground "thanks_idle.png"
+        hotspot(799, 755, 321, 301) action OpenURL("https://twitter.com/TSoletude")
+        hotspot(1647, 823, 238, 232) action Quit(confirm=not main_menu)

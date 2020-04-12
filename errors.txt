@@ -2,9 +2,7 @@
 errors listed below, and try again.
 
 
-File "game/screens.rpy", line 358: u'movie' is not a keyword argument or valid child for the imagemap statement.
-    idle play movie "start_idle.ogv" loop
-                   ^
+File "game/script.rpy", line 344: indentation mismatch.
 
 Ren'Py Version: Ren'Py 7.2.2.491
-Sun Apr 05 17:45:45 2020
+Mon Apr 06 18:50:48 2020
